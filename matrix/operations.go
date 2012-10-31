@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-type operator func(int, int, float64)float64
+type operator func(int, int, float64) float64
 
 func (m Matrix) Foreach(op operator) {
 	// Iterate over rows
@@ -25,6 +25,7 @@ func (A Matrix) Add(B Matrix) (C Matrix, err error) {
 		err = fmt.Errorf("go.iccp/matrix: Matrix dimensions mis-match.")
 		return
 	}
+
 	C, _ = New(sA)
 	for y := 0; y < sA.Y; y++ {
 		for x := 0; x < sA.X; x++ {

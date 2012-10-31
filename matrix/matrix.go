@@ -1,11 +1,11 @@
 package matrix
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 	//"math"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 type Matrix [][]float64
@@ -39,7 +39,7 @@ func New(input ...interface{}) (mat Matrix, err error) {
 	for i := range input {
 		types[i] = fmt.Sprintf("%T", input[i])
 	}
-	e := errors.New("go.iccp/matrix: Unknown input type ("+ strings.Join(types, ", ") + ")")
+	e := errors.New("go.iccp/matrix: Unknown input type (" + strings.Join(types, ", ") + ")")
 
 	switch l {
 	case 1:

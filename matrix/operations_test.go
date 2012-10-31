@@ -1,8 +1,8 @@
 package matrix
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestOperations(t *testing.T) {

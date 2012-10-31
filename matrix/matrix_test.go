@@ -10,7 +10,7 @@ func TestMatrix(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	M, err = New(3,5)
+	M, err = New(3, 5)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,6 +23,11 @@ func TestMatrix(t *testing.T) {
 	}
 
 	M, err = New(`[1;4.0 5.1 6.2]`)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	M, err = New(M)
 	if err != nil {
 		t.Fatal(err)
 	}
