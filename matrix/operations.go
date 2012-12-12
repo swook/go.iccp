@@ -6,7 +6,7 @@ import (
 
 // Foreach performs an operation over all elements in a Matrix.
 // It takes a parameter of type func(int, int) error
-func (m Matrix) Foreach(op func(int, int) error) {
+func (m Matrix) Foreach(op func(int, int)) {
 	// Iterate over rows
 	for y, vy := range m {
 		// Iterate over columns
@@ -33,23 +33,20 @@ func (A Matrix) Add(in ...interface{}) (Matrix, error) {
 		}
 
 		mat, _ = New(sA)
-		mat.Foreach(func(y, x int) error {
+		mat.Foreach(func(y, x int) {
 			mat[y][x] = A[y][x] + B[y][x]
-			return nil
 		})
 	case float64:
 		a := in[0].(float64)
 		mat, _ = New(A.Size())
-		mat.Foreach(func(y, x int) error {
+		mat.Foreach(func(y, x int) {
 			mat[y][x] = A[y][x] + a
-			return nil
 		})
 	case int:
 		a := float64(in[0].(int))
 		mat, _ = New(A.Size())
-		mat.Foreach(func(y, x int) error {
+		mat.Foreach(func(y, x int) {
 			mat[y][x] = A[y][x] + a
-			return nil
 		})
 	default:
 		err = fmt.Errorf("go.iccp/matrix: Invalid input for method Add.")
@@ -72,23 +69,20 @@ func (A Matrix) Subtract(in ...interface{}) (Matrix, error) {
 		}
 
 		mat, _ = New(sA)
-		mat.Foreach(func(y, x int) error {
+		mat.Foreach(func(y, x int) {
 			mat[y][x] = A[y][x] - B[y][x]
-			return nil
 		})
 	case float64:
 		a := in[0].(float64)
 		mat, _ = New(A.Size())
-		mat.Foreach(func(y, x int) error {
+		mat.Foreach(func(y, x int) {
 			mat[y][x] = A[y][x] - a
-			return nil
 		})
 	case int:
 		a := float64(in[0].(int))
 		mat, _ = New(A.Size())
-		mat.Foreach(func(y, x int) error {
+		mat.Foreach(func(y, x int) {
 			mat[y][x] = A[y][x] - a
-			return nil
 		})
 	default:
 		err = fmt.Errorf("go.iccp/matrix: Invalid input for method Subtract.")
@@ -125,16 +119,14 @@ func (A Matrix) Multiply(in ...interface{}) (Matrix, error) {
 	case float64:
 		a := in[0].(float64)
 		mat, _ = New(A.Size())
-		mat.Foreach(func(y, x int) error {
+		mat.Foreach(func(y, x int) {
 			mat[y][x] = a * A[y][x]
-			return nil
 		})
 	case int:
 		a := float64(in[0].(int))
 		mat, _ = New(A.Size())
-		mat.Foreach(func(y, x int) error {
+		mat.Foreach(func(y, x int) {
 			mat[y][x] = a * A[y][x]
-			return nil
 		})
 	default:
 		err = fmt.Errorf("go.iccp/matrix: Invalid input for method Subtract.")
@@ -145,13 +137,26 @@ func (A Matrix) Multiply(in ...interface{}) (Matrix, error) {
 func (A Matrix) Transpose() Matrix {
 	sA := A.Size()
 	B, _ := New(sA.X, sA.Y)
-	A.Foreach(func(r, c int) error {
+	A.Foreach(func(r, c int) {
 		B[c][r] = A[r][c]
-		return nil
 	})
 	return B
 }
 
 func (A Matrix) OuterProduct(B Matrix) (Matrix, error) {
 	return A.Multiply(B.Transpose())
+}
+
+func (A Matrix) ScalarProduct(B Matrix) (float64, error) {
+	var sum float64
+	sA := A.Size()
+	sB := B.Size()
+	if (sA.Y != sB.Y) || (sA.X != sB.X) {
+		return sum, fmt.Errorf("go.iccp/matrix: Matrix dimensions mis-match.")
+	}
+
+	A.Foreach(func(r, c int) {
+		sum += A[r][c] * B[r][c]
+	})
+	return sum, nil
 }
