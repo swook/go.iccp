@@ -22,4 +22,11 @@ func TestOperations(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	println(A.String())
+
+	err = A.OuterProduct(C)
+	if err != nil {
+		t.Fatal(err)
+	}
+	println(A.String())
 }

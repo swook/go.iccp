@@ -136,12 +136,16 @@ func (A Matrix) Multiply(in ...interface{}) error {
 	return err
 }
 
-func (A Matrix) Transpose() error {
-	var err error
-	return err
+func (A Matrix) Transpose() Matrix {
+	sA := A.Size()
+	B, _ := New(sA.X, sA.Y)
+	A.Foreach(func(r, c int) error {
+		B[c][r] = A[r][c]
+		return nil
+	})
+	return B
 }
 
 func (A Matrix) OuterProduct(B Matrix) error {
-	var err error
-	return err
+	return A.Multiply(B.Transpose())
 }
