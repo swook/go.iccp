@@ -177,11 +177,19 @@ func (m Matrix) Duplicate() Matrix {
 }
 
 func (m Matrix) Size() matrixSize {
+	var c int
+	r := len(m)
+
+	if r == 0 {
+		c = 0
+	} else {
+		c = len(m[0])
+	}
 	return matrixSize{
-		len(m),
-		len(m[0]),
-		len(m),
-		len(m[0]),
+		r,
+		c,
+		r,
+		c,
 	}
 }
 
