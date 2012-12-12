@@ -77,6 +77,20 @@ func New(input ...interface{}) (Matrix, error) {
 	return mat, err
 }
 
+// Identity returns an identity matrix of NxN
+func Identity(N int) (Matrix, error) {
+	if N < 1 {
+		return nil, fmt.Errorf("go.iccp/matrix: Provided size invalid (%f)", N)
+	}
+	mat, _ := New(N)
+	// iterate over row
+	for r, _ := range mat {
+		// Set as identity matrix
+		mat[r][r] = 1.0
+	}
+	return mat, nil
+}
+
 // parseMatlab parses a matrix in string form.
 // Valid row delimiters are ';' and '\n'.
 // Valid column delims are ' ', ',', '\n'.
