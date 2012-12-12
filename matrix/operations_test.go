@@ -7,26 +7,28 @@ import (
 func TestOperations(t *testing.T) {
 	A, err := New("1,2,3;4,5,6")
 	B, err := New("4,5,6;7,8,9")
-	err = A.Add(B)
+	C, err := A.Add(B)
 	if err != nil {
 		t.Fatal(err)
 	}
+	println(C.String())
 
-	err = A.Add(1.2)
+	D, err := A.Add(1.2)
 	if err != nil {
 		t.Fatal(err)
 	}
+	println(D.String())
 
-	C, err := New("1;2;3")
-	err = A.Multiply(C)
+	E, err := New("1;2;3")
+	F, err := A.Multiply(E)
 	if err != nil {
 		t.Fatal(err)
 	}
-	println(A.String())
+	println(F.String())
 
-	err = A.OuterProduct(C)
+	G, err := F.OuterProduct(E)
 	if err != nil {
 		t.Fatal(err)
 	}
-	println(A.String())
+	println(G.String())
 }
