@@ -16,24 +16,27 @@ type matrixSize struct {
 
 // _make creates a Matrix of y*x dimensions
 // or y*y dimensions depending on x parameter
-func _make(y int, _x ...int) (mat Matrix) {
+func _make(y int, _x ...int) Matrix {
 	x := y
 	if len(_x) == 1 {
 		x = _x[0]
 	}
 
-	mat = make([][]float64, y)
+	mat := make([][]float64, y)
 	for i, _ := range mat {
 		mat[i] = make([]float64, x)
 	}
-	return
+	return mat
 }
 
 // New returns a new Matrix created based on the input parameters
 // (int) produces a Matrix of int x int
 // (r int, c int) produces a matrix of r x c
 // (string) produces a Matrix using parseMatlab
-func New(input ...interface{}) (mat Matrix, err error) {
+func New(input ...interface{}) (Matrix, error) {
+	var mat Matrix
+	var err error
+
 	l := len(input)
 	types := make([]string, l)
 	for i := range input {
@@ -71,14 +74,16 @@ func New(input ...interface{}) (mat Matrix, err error) {
 	default:
 		err = e
 	}
-	return
+	return mat, err
 }
 
 // parseMatlab parses a matrix in string form.
 // Valid row delimiters are ';' and '\n'.
 // Valid column delims are ' ', ',', '\n'.
 // All row delimiters are counted, but column delimiters are only counted if a value is present.
-func parseMatlab(str string) (mat Matrix, err error) {
+func parseMatlab(str string) (Matrix, error) {
+	var mat Matrix
+	var err error
 	var snum []rune
 	var num float64
 	var rows, cols int
@@ -142,34 +147,33 @@ func parseMatlab(str string) (mat Matrix, err error) {
 	if len(snum) > 0 {
 		mat[r][c], _ = strconv.ParseFloat(string(snum), 64)
 	}
-	return
+	return mat, err
 }
 
 // Duplicate returns a copy of the current Matrix
-func (m Matrix) Duplicate() (m2 Matrix) {
+func (m Matrix) Duplicate() Matrix {
 	s := m.Size()
-	m2, _ = New(s.Y, s.X)
+	m2, _ := New(s.Y, s.X)
 	for y := 0; y < s.Y; y++ {
 		for x := 0; x < s.X; x++ {
 			m2[y][x] = m[y][x]
 		}
 	}
-	return
+	return m2
 }
 
-func (m Matrix) Size() (size matrixSize) {
-	size = matrixSize{
+func (m Matrix) Size() matrixSize {
+	return matrixSize{
 		len(m),
 		len(m[0]),
 		len(m),
 		len(m[0]),
 	}
-	return
 }
 
 // String defines the format in which a Matrix is stringified.
-func (m Matrix) String() (out string) {
-	out = "[\n  "
+func (m Matrix) String() string {
+	out := "[\n  "
 	size := m.Size()
 	stopY := size.Y - 1
 	stopX := size.X - 1
@@ -185,5 +189,5 @@ func (m Matrix) String() (out string) {
 		}
 	}
 	out += "\n]"
-	return
+	return out
 }

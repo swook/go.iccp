@@ -20,15 +20,15 @@ func (m Matrix) Foreach(op func(int, int) error) {
 
 // Add adds an int, float64 or Matrix to an existing Matrix.
 // For int and float64, the operation is performed on each element.
-func (A Matrix) Add(in ...interface{}) (err error) {
+func (A Matrix) Add(in ...interface{}) error {
+	var err error
 	switch in[0].(type) {
 	case Matrix:
 		B := in[0].(Matrix)
 		sA := A.Size()
 		sB := B.Size()
 		if (sA.Y != sB.Y) || (sA.X != sB.X) {
-			err = fmt.Errorf("go.iccp/matrix: Matrix dimensions mis-match.")
-			return
+			return fmt.Errorf("go.iccp/matrix: Matrix dimensions mis-match.")
 		}
 
 		A.Foreach(func(y, x int) error {
@@ -50,20 +50,20 @@ func (A Matrix) Add(in ...interface{}) (err error) {
 	default:
 		err = fmt.Errorf("go.iccp/matrix: Invalid input for method Add.")
 	}
-	return
+	return err
 }
 
 // Subtract subtracts an int, float64 or Matrix from an existing Matrix.
 // For int and float64, the operation is performed on each element.
-func (A Matrix) Subtract(in ...interface{}) (err error) {
+func (A Matrix) Subtract(in ...interface{}) error {
+	var err error
 	switch in[0].(type) {
 	case Matrix:
 		B := in[0].(Matrix)
 		sA := A.Size()
 		sB := B.Size()
 		if (sA.Y != sB.Y) || (sA.X != sB.X) {
-			err = fmt.Errorf("go.iccp/matrix: Matrix dimensions mis-match.")
-			return
+			return fmt.Errorf("go.iccp/matrix: Matrix dimensions mis-match.")
 		}
 
 		A.Foreach(func(y, x int) error {
@@ -85,20 +85,20 @@ func (A Matrix) Subtract(in ...interface{}) (err error) {
 	default:
 		err = fmt.Errorf("go.iccp/matrix: Invalid input for method Subtract.")
 	}
-	return
+	return err
 }
 
 // Multiply multiplies an int, float64 or Matrix to an existing Matrix.
 // For int and float64, the operation is performed on each element.
-func (A Matrix) Multiply(in ...interface{}) (err error) {
+func (A Matrix) Multiply(in ...interface{}) error {
+	var err error
 	switch in[0].(type) {
 	case Matrix:
 		B := in[0].(Matrix)
 		sA := A.Size()
 		sB := B.Size()
 		if sA.X != sB.Y {
-			err = fmt.Errorf("go.iccp/matrix: Matrix dimensions mis-match.")
-			return
+			return fmt.Errorf("go.iccp/matrix: Matrix dimensions mis-match.")
 		}
 		// New matrix of new dimensions
 		C, _ := New(sA.Y, sB.X)
@@ -133,5 +133,15 @@ func (A Matrix) Multiply(in ...interface{}) (err error) {
 	default:
 		err = fmt.Errorf("go.iccp/matrix: Invalid input for method Subtract.")
 	}
-	return
+	return err
+}
+
+func (A Matrix) Transpose() error {
+	var err error
+	return err
+}
+
+func (A Matrix) OuterProduct(B Matrix) error {
+	var err error
+	return err
 }
