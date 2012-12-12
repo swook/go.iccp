@@ -1,7 +1,6 @@
 package matrix
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -17,11 +16,10 @@ func TestOperations(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(A)
 
-	err = A.Add("1")
+	C, err := New("1;2;3")
+	err = A.Multiply(C)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(A)
 }
