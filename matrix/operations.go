@@ -2,6 +2,7 @@ package matrix
 
 import (
 	"fmt"
+	"math"
 )
 
 // Foreach performs an operation over all elements in a Matrix.
@@ -134,6 +135,7 @@ func (A Matrix) Multiply(in ...interface{}) (Matrix, error) {
 	return mat, err
 }
 
+// Transpose returns the transpose of the current matrix.
 func (A Matrix) Transpose() Matrix {
 	sA := A.Size()
 	B, _ := New(sA.X, sA.Y)
@@ -143,10 +145,12 @@ func (A Matrix) Transpose() Matrix {
 	return B
 }
 
+// OuterProduct calculates the outer product of two matrices.
 func (A Matrix) OuterProduct(B Matrix) (Matrix, error) {
 	return A.Multiply(B.Transpose())
 }
 
+// ScalarProduct calculates the scalar product of two matrices.
 func (A Matrix) ScalarProduct(B Matrix) (float64, error) {
 	var sum float64
 	sA := A.Size()
@@ -159,4 +163,48 @@ func (A Matrix) ScalarProduct(B Matrix) (float64, error) {
 		sum += A[r][c] * B[r][c]
 	})
 	return sum, nil
+}
+
+// Inverse uses Gauss-Jordan Elimination to calculate the inverse of a given matrix.
+func (A Matrix) Inverse() (Matrix, error) {
+	var err error
+	sA := A.Size()
+	if sA.X != sA.Y {
+		return nil, fmt.Errorf("go.iccp/matrix: Matrix dimensions invalid")
+	}
+	A = A.Duplicate()
+
+	var max int
+	var rat float64
+	B, _ := Identity(sA.X)
+	for r, _ := range A {
+		max = r
+		for r_ := r + 1; r_ < sA.Rows; r_++ {
+			if math.Abs(A[r_][r]) > math.Abs(A[max][r]) {
+				max = r_
+			}
+		}
+		A[max], A[r] = A[r], A[max]
+		B[max], B[r] = B[r], B[max]
+	}
+	for r, _ := range A {
+		for r_, _ := range A {
+			rat = A[r_][r] / A[r][r]
+			for c := 0; c < sA.Columns; c++ {
+				if r == r_ {
+					continue
+				}
+				A[r_][c] -= A[r][c] * rat
+				B[r_][c] -= B[r][c] * rat
+			}
+		}
+	}
+	for r, _ := range A {
+		rat = A[r][r]
+		for c := 0; c < sA.Columns; c++ {
+			A[r][c] /= rat
+			B[r][c] /= rat
+		}
+	}
+	return B, err
 }
