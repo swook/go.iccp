@@ -138,7 +138,7 @@ func parseMatlab(str string) (Matrix, error) {
 	snum = snum[0:0]
 	for _, v := range str {
 		// When number
-		if v == '.' || (v > 47 && v < 58) {
+		if v == 'e' || v == '-' || v == '.' || (v > 47 && v < 58) {
 			snum = append(snum, v)
 			continue
 		}
