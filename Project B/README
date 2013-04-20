@@ -1,0 +1,17 @@
+Author: Seonwook Park
+Date: 17th December 2012
+CID: 00595031
+
+This project was written in the Go programming language.
+More information about the language available at http://golang.org/
+
+To run the code, do
+	chmod +x run.sh
+	THEN
+	bash run.sh
+	OR
+	./run.sh
+
+This script was written in Linux, but should work for the Mac.
+It will compile and run my programmes.
+Output graph images are inside out/ .

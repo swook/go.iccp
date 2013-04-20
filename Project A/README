@@ -1,0 +1,21 @@
+Author: Seonwook Park
+Date: 12th November 2012
+CID: 00595031
+
+This project was written in the Go programming language.
+More information about the language available at http://golang.org/
+
+To run the code for single pendulum, do
+	bash run_single.sh
+	OR
+	./run_single.sh
+
+This script was written in Linux, but should work for the Mac.
+It will compile and run my programmes.
+Output graph images are inside out/ in the respective folders.
+ie. single pendulum graphs are at single/out/
+
+To run the code for double pendulum, do
+	bash run_double.sh
+	OR
+	./run_double.sh
